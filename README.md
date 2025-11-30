@@ -238,7 +238,7 @@ Authorization: Bearer {token}
 
 ---
 
-## � Autores
+##  Autores
 
 Este proyecto fue desarrollado por:
 
@@ -246,17 +246,3 @@ Este proyecto fue desarrollado por:
 - **Antony Maltez**
 - **Jorge Rodriguez**
 - **Norman Acevedo** - [GitHub](https://github.com/NormanSMA)
-
----
-
-<div align="center">
-  <img src="https://laravel.com/img/logo-horizontal.svg" alt="Built with Laravel" width="200">
-  
-  **Hecho con ❤️ usando Laravel 11**
-</div>
-
----
-
-## 📄 Licencia
-
-Este proyecto es de código abierto y está disponible bajo la licencia MIT.
