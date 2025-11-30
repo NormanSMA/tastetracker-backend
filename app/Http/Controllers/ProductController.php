@@ -16,9 +16,9 @@ class ProductController extends Controller
     {
         // Traemos productos con su categoría para optimizar
         $products = Product::with('category')->where('is_active', true)->get();
-        // Nota: Si es admin, quizás querría ver los inactivos también, 
+        // Nota: Si es admin, quizás querría ver los inactivos también,
         // pero por ahora mostraremos los activos por defecto.
-        
+
         return ProductResource::collection($products);
     }
 
@@ -52,10 +52,18 @@ class ProductController extends Controller
         }
 
         if ($request->hasFile('image')) {
-            if ($product->image) {
-                Storage::disk('public')->delete($product->image);
+            try {
+                // Validar existencia lógica y física antes de borrar
+                if ($product->image && Storage::disk('public')->exists($product->image)) {
+                    Storage::disk('public')->delete($product->image);
+                }
+                $data['image'] = $request->file('image')->store('products', 'public');
+            } catch (\Exception $e) {
+                // Loguear el error pero NO detener la actualización del resto de datos
+                \Log::error('Error actualizando imagen de producto ' . $product->id . ': ' . $e->getMessage());
+                // Opcional: podrías retornar error si la imagen es crítica,
+                // pero para UX es mejor guardar el resto y avisar.
             }
-            $data['image'] = $request->file('image')->store('products', 'public');
         }
 
         $product->update($data);

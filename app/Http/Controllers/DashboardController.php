@@ -13,19 +13,31 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        // 1. Ventas de Hoy (Solo pedidos pagados)
-        $todaySales = Order::whereDate('created_at', Carbon::today())
-            ->where('status', 'paid')
-            ->sum('total');
+        $user = auth()->user();
+        $isWaiter = $user->role === 'waiter';
 
-        // 2. Cantidad de Pedidos Hoy
-        $todayOrdersCount = Order::whereDate('created_at', Carbon::today())->count();
+        // 1. Query Base para Ventas y Pedidos
+        $ordersQuery = Order::query()->whereDate('created_at', Carbon::today());
 
-        // 3. Productos Más Vendidos (Top 5)
+        // Si es mesero, filtrar solo sus órdenes
+        if ($isWaiter) {
+            $ordersQuery->where('waiter_id', $user->id);
+        }
+
+        // Calcular métricas
+        $todaySales = (clone $ordersQuery)->where('status', 'paid')->sum('total');
+        $todayOrdersCount = (clone $ordersQuery)->count();
+
+        // 2. Top Productos (Global para saber qué vender, o filtrado si prefieres)
+        // Dejaremos los productos globales para que el mesero sepa qué es popular
         $topProducts = OrderItem::select('product_id', DB::raw('SUM(quantity) as total_quantity'))
+            ->whereHas('order', function($q) use ($isWaiter, $user) {
+                 $q->whereDate('created_at', Carbon::today());
+                 if ($isWaiter) $q->where('waiter_id', $user->id); // Filtra top productos vendidos por ÉL
+            })
             ->groupBy('product_id')
             ->orderByDesc('total_quantity')
-            ->with('product:id,name') // Solo traer el nombre
+            ->with('product:id,name')
             ->take(5)
             ->get()
             ->map(function ($item) {
@@ -35,26 +47,29 @@ class DashboardController extends Controller
                 ];
             });
 
-        // 4. Empleados con Mayor Facturación (Top 3 Meseros)
-        $topWaiters = Order::select('waiter_id', DB::raw('SUM(total) as total_sales'))
-            ->where('status', 'paid') // Solo contar ventas reales
-            ->groupBy('waiter_id')
-            ->orderByDesc('total_sales')
-            ->with('waiter:id,name')
-            ->take(3)
-            ->get()
-            ->map(function ($item) {
-                return [
-                    'name' => $item->waiter->name,
-                    'sales' => (float) $item->total_sales,
-                ];
-            });
+        // 3. Top Meseros (Solo visible para Admin)
+        $topWaiters = [];
+        if (!$isWaiter) { // Si es Admin
+            $topWaiters = Order::select('waiter_id', DB::raw('SUM(total) as total_sales'))
+                ->where('status', 'paid')
+                ->groupBy('waiter_id')
+                ->orderByDesc('total_sales')
+                ->with('waiter:id,name')
+                ->take(3)
+                ->get()
+                ->map(function ($item) {
+                    return [
+                        'name' => $item->waiter->name,
+                        'sales' => (float) $item->total_sales,
+                    ];
+                });
+        }
 
         return response()->json([
             'today_sales' => $todaySales,
             'today_orders' => $todayOrdersCount,
             'top_products' => $topProducts,
-            'top_waiters' => $topWaiters
+            'top_waiters' => $topWaiters // Enviará array vacío al mesero
         ]);
     }
 }

@@ -49,7 +49,7 @@ class CategoryController extends Controller
 
         if ($request->hasFile('image')) {
             // Borrar imagen vieja si existe
-            if ($category->image) {
+            if ($category->image && Storage::disk('public')->exists($category->image)) {
                 Storage::disk('public')->delete($category->image);
             }
             $data['image'] = $request->file('image')->store('categories', 'public');
@@ -63,10 +63,10 @@ class CategoryController extends Controller
     // DELETE /api/categories/{id}
     public function destroy(Category $category)
     {
-        if ($category->image) {
+        if ($category->image && Storage::disk('public')->exists($category->image)) {
             Storage::disk('public')->delete($category->image);
         }
-        
+
         $category->delete();
 
         return response()->json(['message' => 'Categoría eliminada']);

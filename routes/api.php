@@ -7,6 +7,8 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\AreaController;
+use App\Http\Controllers\UserController;
 
 // --- Rutas Públicas (Cualquiera puede entrar) ---
 Route::post('/login', [AuthController::class, 'login']);
@@ -14,10 +16,11 @@ Route::get('/categories', [CategoryController::class, 'index']);
 Route::get('/categories/{category}', [CategoryController::class, 'show']);
 Route::get('/products', [ProductController::class, 'index']);
 Route::get('/products/{product}', [ProductController::class, 'show']);
+Route::get('/areas', [AreaController::class, 'index']);
 
 // --- Rutas Protegidas (Requieren Token Bearer) ---
 Route::middleware(['auth:sanctum'])->group(function () {
-    
+
     // Auth
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/user-profile', [AuthController::class, 'userProfile']);
@@ -40,4 +43,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     // Dashboard (Solo Admin debería ver esto, pero por ahora lo dejamos protegido general)
     Route::get('/dashboard', [DashboardController::class, 'index']);
+
+    // Gestión de Usuarios (Admin)
+    Route::apiResource('users', UserController::class);
 });
