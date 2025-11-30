@@ -245,4 +245,4 @@ Este proyecto fue desarrollado por:
 - **Hoowerts Gross**
 - **Antony Maltez**
 - **Jorge Rodriguez**
-- **Norman Acevedo** - [GitHub](https://github.com/NormanSMA)
+- **Norman Acevedo**
