@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -38,7 +39,7 @@ class AuthController extends Controller
         // 5. Generar Token (Sanctum)
         // Borramos tokens anteriores para evitar acumulación (opcional, buena práctica de seguridad)
         $user->tokens()->delete();
-        
+
         $token = $user->createToken('auth_token')->plainTextToken;
 
         // 6. Retornar respuesta
@@ -46,7 +47,7 @@ class AuthController extends Controller
             'message' => 'Login exitoso',
             'access_token' => $token,
             'token_type' => 'Bearer',
-            'user' => $user
+            'user' => new UserResource($user)
         ], 200);
     }
 
@@ -64,7 +65,7 @@ class AuthController extends Controller
     {
         return response()->json([
             'message' => 'Datos del usuario autenticado',
-            'user' => $request->user()
+            'user' => new UserResource($request->user())
         ]);
     }
 }

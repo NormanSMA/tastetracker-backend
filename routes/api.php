@@ -9,6 +9,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AreaController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ProfileController;
 
 // --- Rutas Públicas (Cualquiera puede entrar) ---
 Route::post('/login', [AuthController::class, 'login']);
@@ -25,6 +26,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/user-profile', [AuthController::class, 'userProfile']);
 
+    // Profile Management (Usuario edita su propio perfil)
+    Route::get('/profile', [ProfileController::class, 'show']);
+    Route::post('/profile/update', [ProfileController::class, 'update']);
+    Route::put('/profile/password', [ProfileController::class, 'updatePassword']);
+
     // Gestión de Categorías (Admin)
     Route::post('/categories', [CategoryController::class, 'store']);
     Route::put('/categories/{category}', [CategoryController::class, 'update']); // Usar _method: PUT en form-data
@@ -39,6 +45,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/orders', [OrderController::class, 'index']);
     Route::post('/orders', [OrderController::class, 'store']); // Crear pedido
     Route::get('/orders/{order}', [OrderController::class, 'show']);
+    Route::put('/orders/{order}', [OrderController::class, 'update']); // Actualizar pedido (status completed)
     Route::patch('/orders/{order}/status', [OrderController::class, 'updateStatus']);
 
     // Dashboard (Solo Admin debería ver esto, pero por ahora lo dejamos protegido general)

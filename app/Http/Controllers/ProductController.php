@@ -44,28 +44,37 @@ class ProductController extends Controller
     }
 
     // PUT /api/products/{id}
-    public function update(StoreProductRequest $request, Product $product)
+    public function update(Request $request, Product $product)
     {
-        $data = $request->validated();
-        if (isset($data['name'])) {
-            $data['slug'] = Str::slug($data['name']);
+        // 1. Datos básicos manuales (sin imagen aún)
+        $data = [
+            'name' => $request->input('name'),
+            'price' => $request->input('price'),
+            'description' => $request->input('description'),
+            'category_id' => $request->input('category_id'),
+        ];
+
+        // 2. Generar slug si hay nombre
+        if ($request->has('name')) {
+            $data['slug'] = Str::slug($request->input('name'));
         }
 
+        // 3. Manejar is_active si viene en el request
+        if ($request->has('is_active')) {
+            $data['is_active'] = $request->input('is_active', true);
+        }
+
+        // 4. Manejo explícito de la imagen
         if ($request->hasFile('image')) {
-            try {
-                // Validar existencia lógica y física antes de borrar
-                if ($product->image && Storage::disk('public')->exists($product->image)) {
-                    Storage::disk('public')->delete($product->image);
-                }
-                $data['image'] = $request->file('image')->store('products', 'public');
-            } catch (\Exception $e) {
-                // Loguear el error pero NO detener la actualización del resto de datos
-                \Log::error('Error actualizando imagen de producto ' . $product->id . ': ' . $e->getMessage());
-                // Opcional: podrías retornar error si la imagen es crítica,
-                // pero para UX es mejor guardar el resto y avisar.
+            // Si hay imagen NUEVA, borramos la vieja y subimos la nueva
+            if ($product->image && Storage::disk('public')->exists($product->image)) {
+                Storage::disk('public')->delete($product->image);
             }
+            $data['image'] = $request->file('image')->store('products', 'public');
         }
+        // NOTA: Si no hay archivo, NO tocamos la key 'image' en $data.
 
+        // 5. Actualizar
         $product->update($data);
 
         return new ProductResource($product->load('category'));

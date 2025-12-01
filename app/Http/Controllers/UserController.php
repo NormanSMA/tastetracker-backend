@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Http\Requests\StoreUserRequest;
+use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -16,23 +17,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::select('id', 'name', 'email', 'role', 'phone', 'photo', 'is_active', 'created_at')
-                     ->orderBy('created_at', 'desc')
-                     ->get()
-                     ->map(function($user) {
-                         return [
-                             'id' => $user->id,
-                             'name' => $user->name,
-                             'email' => $user->email,
-                             'role' => $user->role,
-                             'phone' => $user->phone,
-                             'photo_url' => $user->photo ? url(Storage::url($user->photo)) : null,
-                             'is_active' => (bool) $user->is_active,
-                             'created_at' => $user->created_at->format('Y-m-d H:i'),
-                         ];
-                     });
+        $users = User::orderBy('created_at', 'desc')->get();
 
-        return response()->json(['data' => $users]);
+        return response()->json(['data' => UserResource::collection($users)]);
     }
 
     /**
@@ -55,13 +42,7 @@ class UserController extends Controller
 
         return response()->json([
             'message' => 'Usuario creado exitosamente',
-            'data' => [
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
-                'role' => $user->role,
-                'photo_url' => $user->photo ? url(Storage::url($user->photo)) : null,
-            ]
+            'data' => new UserResource($user)
         ], 201);
     }
 
@@ -72,16 +53,7 @@ class UserController extends Controller
     public function show(User $user)
     {
         return response()->json([
-            'data' => [
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
-                'role' => $user->role,
-                'phone' => $user->phone,
-                'photo_url' => $user->photo ? url(Storage::url($user->photo)) : null,
-                'is_active' => (bool) $user->is_active,
-                'created_at' => $user->created_at->format('Y-m-d H:i'),
-            ]
+            'data' => new UserResource($user)
         ]);
     }
 
@@ -111,15 +83,12 @@ class UserController extends Controller
 
         $user->update($data);
 
+        // Refrescar el modelo para obtener los datos actualizados
+        $user->refresh();
+
         return response()->json([
             'message' => 'Usuario actualizado exitosamente',
-            'data' => [
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
-                'role' => $user->role,
-                'photo_url' => $user->photo ? url(Storage::url($user->photo)) : null,
-            ]
+            'data' => new UserResource($user)
         ]);
     }
 

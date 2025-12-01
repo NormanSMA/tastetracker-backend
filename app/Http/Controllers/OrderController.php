@@ -28,7 +28,7 @@ class OrderController extends Controller
             // El 'waiter_id' se toma del usuario autenticado (el mesero que usa la app)
             $order = Order::create([
                 'user_id' => $request->customer_id,
-                'waiter_id' => $request->user()->id, 
+                'waiter_id' => $request->user()->id,
                 'area_id' => $request->area_id,
                 'table_number' => $request->table_number,
                 'order_type' => $request->order_type,
@@ -45,7 +45,7 @@ class OrderController extends Controller
 
                 // Calcular subtotal usando el precio ACTUAL del producto
                 $subtotal = $product->price * $itemData['quantity'];
-                
+
                 OrderItem::create([
                     'order_id' => $order->id,
                     'product_id' => $product->id,
@@ -71,14 +71,55 @@ class OrderController extends Controller
         return new OrderResource($order->load(['waiter', 'customer', 'area', 'items.product']));
     }
 
+    // PUT /api/orders/{id}
+    public function update(Request $request, Order $order)
+    {
+        // 1. Validar estado
+        $request->validate([
+            'status' => 'required|string'
+        ]);
+
+        // 2. Verificar si ya está pagada/completada
+        if ($order->status === 'paid') {
+            return response()->json([
+                'message' => 'No se puede modificar una orden completada/pagada'
+            ], 400);
+        }
+
+        // 3. Mapear 'completed' a 'paid'
+        $status = $request->status;
+        if ($status === 'completed') {
+            $status = 'paid';
+        }
+
+        // 4. Validar que el estado final sea válido en la BD
+        if (!in_array($status, ['pending', 'preparing', 'ready', 'served', 'paid', 'cancelled'])) {
+             return response()->json(['message' => 'Estado inválido'], 422);
+        }
+
+        // 5. Actualizar
+        $order->update(['status' => $status]);
+
+        return new OrderResource($order);
+    }
+
     // PATCH /api/orders/{id}/status
     public function updateStatus(Request $request, Order $order)
     {
         $request->validate([
-            'status' => 'required|in:pending,preparing,ready,served,paid,cancelled'
+            'status' => 'required|string'
         ]);
 
-        $order->update(['status' => $request->status]);
+        $status = $request->status;
+        if ($status === 'completed') {
+            $status = 'paid';
+        }
+
+        if (!in_array($status, ['pending', 'preparing', 'ready', 'served', 'paid', 'cancelled'])) {
+            return response()->json(['message' => 'Estado inválido'], 422);
+        }
+
+        $order->update(['status' => $status]);
 
         return response()->json([
             'message' => 'Estado del pedido actualizado',
