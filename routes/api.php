@@ -48,8 +48,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::put('/orders/{order}', [OrderController::class, 'update']); // Actualizar pedido (status completed)
     Route::patch('/orders/{order}/status', [OrderController::class, 'updateStatus']);
 
-    // Dashboard (Solo Admin debería ver esto, pero por ahora lo dejamos protegido general)
+    // Dashboard (Modular con filtros independientes)
     Route::get('/dashboard', [DashboardController::class, 'index']);
+    Route::get('/dashboard/summary', [DashboardController::class, 'summary']);
+    Route::get('/dashboard/charts/sales', [DashboardController::class, 'salesChart']);
+    Route::get('/dashboard/charts/categories', [DashboardController::class, 'categoryChart']);
 
     // Gestión de Usuarios (Admin)
     Route::apiResource('users', UserController::class);

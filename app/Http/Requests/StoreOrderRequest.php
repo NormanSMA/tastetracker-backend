@@ -18,8 +18,9 @@ class StoreOrderRequest extends FormRequest
             'table_number' => 'nullable|string',
             'order_type' => 'required|in:dine_in,takeaway,delivery',
             'customer_id' => 'nullable|exists:users,id', // Opcional si es cliente registrado
+            'guest_name' => 'nullable|string|max:255', // Nombre de cliente invitado
             'notes' => 'nullable|string',
-            
+
             // Validación del Array de Items
             'items' => 'required|array|min:1',
             'items.*.product_id' => 'required|exists:products,id',

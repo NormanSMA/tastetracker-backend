@@ -28,6 +28,7 @@ class OrderController extends Controller
             // El 'waiter_id' se toma del usuario autenticado (el mesero que usa la app)
             $order = Order::create([
                 'user_id' => $request->customer_id,
+                'guest_name' => $request->guest_name,
                 'waiter_id' => $request->user()->id,
                 'area_id' => $request->area_id,
                 'table_number' => $request->table_number,
@@ -86,18 +87,10 @@ class OrderController extends Controller
             ], 400);
         }
 
-        // 3. Mapear 'completed' a 'paid'
-        $status = $request->status;
-        if ($status === 'completed') {
-            $status = 'paid';
-        }
+        // 3. Validar y normalizar status
+        $status = $this->validateAndNormalizeStatus($request->status);
 
-        // 4. Validar que el estado final sea válido en la BD
-        if (!in_array($status, ['pending', 'preparing', 'ready', 'served', 'paid', 'cancelled'])) {
-             return response()->json(['message' => 'Estado inválido'], 422);
-        }
-
-        // 5. Actualizar
+        // 4. Actualizar
         $order->update(['status' => $status]);
 
         return new OrderResource($order);
@@ -110,14 +103,15 @@ class OrderController extends Controller
             'status' => 'required|string'
         ]);
 
-        $status = $request->status;
-        if ($status === 'completed') {
-            $status = 'paid';
+        // Seguridad: Impedir edición de órdenes pagadas
+        if ($order->status === 'paid') {
+            return response()->json([
+                'message' => 'No se puede modificar una orden completada/pagada'
+            ], 400);
         }
 
-        if (!in_array($status, ['pending', 'preparing', 'ready', 'served', 'paid', 'cancelled'])) {
-            return response()->json(['message' => 'Estado inválido'], 422);
-        }
+        // Validar y normalizar status
+        $status = $this->validateAndNormalizeStatus($request->status);
 
         $order->update(['status' => $status]);
 
@@ -125,5 +119,26 @@ class OrderController extends Controller
             'message' => 'Estado del pedido actualizado',
             'status' => $order->status
         ]);
+    }
+
+    /**
+     * Validar y normalizar el estado de una orden
+     * DRY: Método privado para evitar duplicación
+     */
+    private function validateAndNormalizeStatus(string $status): string
+    {
+        // Mapear 'completed' a 'paid'
+        if ($status === 'completed') {
+            $status = 'paid';
+        }
+
+        // Validar que el estado final sea válido en la BD
+        $validStatuses = ['pending', 'preparing', 'ready', 'served', 'paid', 'cancelled'];
+
+        if (!in_array($status, $validStatuses)) {
+            abort(422, 'Estado inválido');
+        }
+
+        return $status;
     }
 }
