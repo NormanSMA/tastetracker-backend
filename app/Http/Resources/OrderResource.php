@@ -13,6 +13,7 @@ class OrderResource extends JsonResource
             'id' => $this->id,
             'formatted_id' => 'Pedido #' . str_pad($this->id, 4, '0', STR_PAD_LEFT), // Ej: Pedido #0012
             'table_number' => $this->table_number,
+            'table_identifier' => $this->table_identifier, // ← AÑADIDO: "S3", "T5", etc.
             'status' => $this->status,
             'order_type' => $this->order_type,
             'total' => (float) $this->total,
@@ -22,7 +23,16 @@ class OrderResource extends JsonResource
             'guest_name' => $this->guest_name,
             'waiter' => $this->waiter->name,
             'waiter_name' => $this->waiter ? $this->waiter->name : 'Sin Asignar',
-            'area' => $this->area ? $this->area->name : 'N/A',
+            
+            // Área completa con todos sus campos
+            'area' => $this->area ? [
+                'id' => $this->area->id,
+                'name' => $this->area->name,
+                'prefix' => $this->area->prefix,
+                'total_tables' => $this->area->total_tables,
+                'description' => $this->area->description,
+            ] : null,
+            
             'area_name' => $this->area ? $this->area->name : 'General', // Para mostrar "Terraza"
             'items' => OrderItemResource::collection($this->whenLoaded('items')), // Anidamos los items
             'notes' => $this->notes,

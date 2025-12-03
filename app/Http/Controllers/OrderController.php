@@ -9,6 +9,7 @@ use App\Http\Requests\StoreOrderRequest;
 use App\Http\Resources\OrderResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class OrderController extends Controller
 {
@@ -140,5 +141,27 @@ class OrderController extends Controller
         }
 
         return $status;
+    }
+
+    /**
+     * Generar y descargar factura en PDF
+     * GET /api/orders/{order}/invoice
+     */
+    public function downloadInvoice(Order $order)
+    {
+        // Cargar todas las relaciones necesarias
+        $order->load(['waiter', 'customer', 'area', 'items.product']);
+
+        // Generar PDF usando la vista Blade
+        $pdf = Pdf::loadView('invoices.order', ['order' => $order]);
+
+        // Configurar orientación y tamaño
+        $pdf->setPaper('letter', 'portrait');
+
+        // Nombre del archivo
+        $filename = 'factura-' . str_pad($order->id, 6, '0', STR_PAD_LEFT) . '.pdf';
+
+        // Descargar el PDF
+        return $pdf->download($filename);
     }
 }

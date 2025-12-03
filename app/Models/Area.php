@@ -9,7 +9,7 @@ class Area extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'description', 'is_active'];
+    protected $fillable = ['name', 'prefix', 'total_tables', 'description', 'is_active'];
 
     public function orders()
     {

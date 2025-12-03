@@ -17,6 +17,7 @@ class AuthController extends Controller
         $request->validate([
             'email' => 'required|email',
             'password' => 'required',
+            'remember_me' => 'boolean', // ← NUEVO: checkbox "Mantener sesión"
         ]);
 
         // 2. Buscar usuario
@@ -37,16 +38,24 @@ class AuthController extends Controller
         }
 
         // 5. Generar Token (Sanctum)
-        // Borramos tokens anteriores para evitar acumulación (opcional, buena práctica de seguridad)
+        // Borramos tokens anteriores para evitar acumulación
         $user->tokens()->delete();
 
-        $token = $user->createToken('auth_token')->plainTextToken;
+        // Configurar expiración del token según "Mantener sesión"
+        $rememberMe = $request->boolean('remember_me', false);
+        $expiresAt = $rememberMe 
+            ? now()->addDays(30)  // 30 días si tiene check
+            : now()->addHours(3); // 3 horas si no (permite 3 min de inactividad + margen)
+
+        $token = $user->createToken('auth_token', ['*'], $expiresAt)->plainTextToken;
 
         // 6. Retornar respuesta
         return response()->json([
             'message' => 'Login exitoso',
             'access_token' => $token,
             'token_type' => 'Bearer',
+            'remember_me' => $rememberMe,
+            'expires_at' => $expiresAt->toISOString(),
             'user' => new UserResource($user)
         ], 200);
     }
