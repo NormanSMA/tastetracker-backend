@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // ==================== USUARIOS ====================
-        
+
         // Administradores
         $admin1 = User::updateOrCreate(
             ['email' => 'nsma@tastetracker.com'],
@@ -135,7 +135,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // ==================== ÁREAS ====================
-        
+
         $area1 = Area::updateOrCreate(
             ['name' => 'Salón Principal'],
             [
@@ -182,7 +182,7 @@ class DatabaseSeeder extends Seeder
         );
 
         // ==================== CATEGORÍAS ====================
-        
+
         $catEntradas = Category::create([
             'name' => 'Entradas',
             'slug' => 'entradas',
@@ -220,14 +220,14 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // ==================== PRODUCTOS ====================
-        
+
         // ENTRADAS
         $prod1 = Product::create([
             'category_id' => $catEntradas->id,
             'name' => 'Bruschetta Italiana',
             'slug' => 'bruschetta-italiana',
             'description' => 'Pan tostado con tomate fresco, albahaca, ajo y aceite de oliva',
-            'price' => 8.99,
+            'price' => 328.14,
             'image' => 'https://images.unsplash.com/photo-1572695157366-5e585ab2b69f?w=800&q=80',
             'is_active' => true,
         ]);
@@ -237,7 +237,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Alitas Picantes',
             'slug' => 'alitas-picantes',
             'description' => 'Alitas de pollo con salsa búfalo y aderezo ranch',
-            'price' => 12.50,
+            'price' => 456.25,
             'image' => 'https://images.unsplash.com/photo-1608039829572-78524f79c4c7?w=800&q=80',
             'is_active' => true,
         ]);
@@ -247,7 +247,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Camarones al Ajillo',
             'slug' => 'camarones-al-ajillo',
             'description' => 'Camarones salteados en mantequilla, ajo y vino blanco',
-            'price' => 15.99,
+            'price' => 583.64,
             'image' => 'https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?w=800&q=80',
             'is_active' => true,
         ]);
@@ -257,7 +257,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Nachos Supreme',
             'slug' => 'nachos-supreme',
             'description' => 'Tortillas con queso, guacamole, crema y jalapeños',
-            'price' => 10.99,
+            'price' => 401.14,
             'image' => 'https://images.unsplash.com/photo-1513456852971-30c0b8199d4d?w=800&q=80',
             'is_active' => true,
         ]);
@@ -267,7 +267,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Tabla de Quesos',
             'slug' => 'tabla-de-quesos',
             'description' => 'Selección de quesos artesanales con frutas y nueces',
-            'price' => 18.50,
+            'price' => 675.25,
             'image' => 'https://images.unsplash.com/photo-1452195100486-9cc805987862?w=800&q=80',
             'is_active' => true,
         ]);
@@ -278,8 +278,8 @@ class DatabaseSeeder extends Seeder
             'name' => 'Filete Mignon',
             'slug' => 'filete-mignon',
             'description' => 'Filete de res premium con puré de papas y vegetales asados',
-            'price' => 32.99,
-            'image' => 'https://images.unsplash.com/photo-1558030006-450675393462?w=800&q=80',
+            'price' => 600,
+            'image' => 'https://picsum.photos/seed/filete-mignon/800/600',
             'is_active' => true,
         ]);
 
@@ -288,8 +288,8 @@ class DatabaseSeeder extends Seeder
             'name' => 'Salmón a la Parrilla',
             'slug' => 'salmon-a-la-parrilla',
             'description' => 'Filete de salmón con salsa de limón y hierbas frescas',
-            'price' => 28.50,
-            'image' => 'https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=800&q=80',
+            'price' => 550,
+            'image' => 'https://picsum.photos/seed/salmon-parrilla/800/600',
             'is_active' => true,
         ]);
 
@@ -298,8 +298,8 @@ class DatabaseSeeder extends Seeder
             'name' => 'Pasta Carbonara',
             'slug' => 'pasta-carbonara',
             'description' => 'Pasta con salsa cremosa de huevo, queso parmesano y panceta',
-            'price' => 18.99,
-            'image' => 'https://images.unsplash.com/photo-1612874742237-6526221588e3?w=800&q=80',
+            'price' => 420,
+            'image' => 'https://picsum.photos/seed/pasta-carbonara/800/600',
             'is_active' => true,
         ]);
 
@@ -308,8 +308,8 @@ class DatabaseSeeder extends Seeder
             'name' => 'Pollo Teriyaki',
             'slug' => 'pollo-teriyaki',
             'description' => 'Pechuga de pollo con salsa teriyaki y arroz integral',
-            'price' => 22.00,
-            'image' => 'https://images.unsplash.com/photo-1588347818036-dd0e6a6d9511?w=800&q=80',
+            'price' => 360,
+            'image' => 'https://picsum.photos/seed/pollo-teriyaki/800/600',
             'is_active' => true,
         ]);
 
@@ -318,8 +318,8 @@ class DatabaseSeeder extends Seeder
             'name' => 'Costillas BBQ',
             'slug' => 'costillas-bbq',
             'description' => 'Costillas de cerdo glaseadas con salsa barbecue casera',
-            'price' => 26.99,
-            'image' => 'https://images.unsplash.com/photo-1544025162-d76694265947?w=800&q=80',
+            'price' => 500,
+            'image' => 'https://picsum.photos/seed/costillas-bbq/800/600',
             'is_active' => true,
         ]);
 
@@ -328,8 +328,8 @@ class DatabaseSeeder extends Seeder
             'name' => 'Paella Valenciana',
             'slug' => 'paella-valenciana',
             'description' => 'Arroz con mariscos, pollo y azafrán al estilo valenciano',
-            'price' => 24.50,
-            'image' => 'https://images.unsplash.com/photo-1534080564583-6be75777b70a?w=800&q=80',
+            'price' => 480,
+            'image' => 'https://picsum.photos/seed/paella-valenciana/800/600',
             'is_active' => true,
         ]);
 
@@ -338,8 +338,8 @@ class DatabaseSeeder extends Seeder
             'name' => 'Lasaña Boloñesa',
             'slug' => 'lasana-bolonesa',
             'description' => 'Capas de pasta con carne, bechamel y queso gratinado',
-            'price' => 19.99,
-            'image' => 'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=800&q=80',
+            'price' => 400,
+            'image' => 'https://picsum.photos/seed/lasana-bolonesa/800/600',
             'is_active' => true,
         ]);
 
@@ -348,8 +348,8 @@ class DatabaseSeeder extends Seeder
             'name' => 'Tacos al Pastor',
             'slug' => 'tacos-al-pastor',
             'description' => 'Tacos de cerdo marinado con piña, cilantro y cebolla',
-            'price' => 14.99,
-            'image' => 'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=800&q=80',
+            'price' => 320,
+            'image' => 'https://picsum.photos/seed/tacos-al-pastor/800/600',
             'is_active' => true,
         ]);
 
@@ -359,7 +359,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Pizza Margherita',
             'slug' => 'pizza-margherita',
             'description' => 'Salsa de tomate, mozzarella fresca y albahaca',
-            'price' => 16.99,
+            'price' => 620.14,
             'image' => 'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=800&q=80',
             'is_active' => true,
         ]);
@@ -369,7 +369,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Pizza Pepperoni',
             'slug' => 'pizza-pepperoni',
             'description' => 'Salsa de tomate, mozzarella y abundante pepperoni',
-            'price' => 18.50,
+            'price' => 675.25,
             'image' => 'https://images.unsplash.com/photo-1628840042765-356cda07504e?w=800&q=80',
             'is_active' => true,
         ]);
@@ -379,7 +379,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Pizza Cuatro Quesos',
             'slug' => 'pizza-cuatro-quesos',
             'description' => 'Mozzarella, gorgonzola, parmesano y queso de cabra',
-            'price' => 20.99,
+            'price' => 766.14,
             'image' => 'https://images.unsplash.com/photo-1571997478779-2adcbbe9ab2f?w=800&q=80',
             'is_active' => true,
         ]);
@@ -389,7 +389,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Pizza Hawaiana',
             'slug' => 'pizza-hawaiana',
             'description' => 'Jamón, piña, mozzarella y salsa de tomate',
-            'price' => 17.50,
+            'price' => 638.75,
             'image' => 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=800&q=80',
             'is_active' => true,
         ]);
@@ -400,7 +400,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Ensalada César',
             'slug' => 'ensalada-cesar',
             'description' => 'Lechuga romana, pollo, crutones, parmesano y aderezo césar',
-            'price' => 13.99,
+            'price' => 510.64,
             'image' => 'https://images.unsplash.com/photo-1546793665-c74683f339c1?w=800&q=80',
             'is_active' => true,
         ]);
@@ -410,7 +410,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Ensalada Caprese',
             'slug' => 'ensalada-caprese',
             'description' => 'Tomate, mozzarella fresca, albahaca y vinagre balsámico',
-            'price' => 11.50,
+            'price' => 419.75,
             'image' => 'https://images.unsplash.com/photo-1592417817038-d13fd7342656?w=800&q=80',
             'is_active' => true,
         ]);
@@ -420,7 +420,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Ensalada Griega',
             'slug' => 'ensalada-griega',
             'description' => 'Pepino, tomate, aceitunas, queso feta y aderezo mediterráneo',
-            'price' => 12.99,
+            'price' => 474.14,
             'image' => 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=800&q=80',
             'is_active' => true,
         ]);
@@ -431,7 +431,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Limonada Natural',
             'slug' => 'limonada-natural',
             'description' => 'Limonada fresca hecha con limones recién exprimidos',
-            'price' => 4.50,
+            'price' => 164.25,
             'image' => 'https://images.unsplash.com/photo-1523677011781-c91d1bbe2f8d?w=800&q=80',
             'is_active' => true,
         ]);
@@ -441,7 +441,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Café Espresso',
             'slug' => 'cafe-espresso',
             'description' => 'Café italiano preparado en máquina espresso',
-            'price' => 3.50,
+            'price' => 127.75,
             'image' => 'https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=800&q=80',
             'is_active' => true,
         ]);
@@ -451,7 +451,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Smoothie de Frutos Rojos',
             'slug' => 'smoothie-frutos-rojos',
             'description' => 'Batido de fresa, frambuesa, arándanos y yogurt',
-            'price' => 6.99,
+            'price' => 255.14,
             'image' => 'https://images.unsplash.com/photo-1505252585461-04db1eb84625?w=800&q=80',
             'is_active' => true,
         ]);
@@ -461,7 +461,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Cerveza Artesanal IPA',
             'slug' => 'cerveza-artesanal-ipa',
             'description' => 'Cerveza artesanal estilo IPA con notas cítricas',
-            'price' => 7.50,
+            'price' => 273.75,
             'image' => 'https://images.unsplash.com/photo-1535958636474-b021ee887b13?w=800&q=80',
             'is_active' => true,
         ]);
@@ -471,7 +471,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Vino Tinto Reserva',
             'slug' => 'vino-tinto-reserva',
             'description' => 'Copa de vino tinto de la casa, reserva especial',
-            'price' => 9.99,
+            'price' => 364.64,
             'image' => 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=800&q=80',
             'is_active' => true,
         ]);
@@ -481,7 +481,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Mojito Clásico',
             'slug' => 'mojito-clasico',
             'description' => 'Cóctel refrescante de ron, menta, limón y soda',
-            'price' => 8.50,
+            'price' => 310.25,
             'image' => 'https://images.unsplash.com/photo-1551538827-9c037cc4f71a?w=800&q=80',
             'is_active' => true,
         ]);
@@ -491,7 +491,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Agua Mineral',
             'slug' => 'agua-mineral',
             'description' => 'Agua mineral natural con o sin gas',
-            'price' => 2.50,
+            'price' => 91.25,
             'image' => 'https://images.unsplash.com/photo-1548839140-29a749e1cf4d?w=800&q=80',
             'is_active' => true,
         ]);
@@ -502,7 +502,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Tiramisú',
             'slug' => 'tiramisu',
             'description' => 'Postre italiano con café, mascarpone y cacao',
-            'price' => 8.99,
+            'price' => 328.14,
             'image' => 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=800&q=80',
             'is_active' => true,
         ]);
@@ -512,7 +512,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Cheesecake de Frutos Rojos',
             'slug' => 'cheesecake-frutos-rojos',
             'description' => 'Tarta de queso con coulis de frutos del bosque',
-            'price' => 9.50,
+            'price' => 346.75,
             'image' => 'https://images.unsplash.com/photo-1533134242820-b4f29f04ca83?w=800&q=80',
             'is_active' => true,
         ]);
@@ -522,7 +522,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Brownie con Helado',
             'slug' => 'brownie-con-helado',
             'description' => 'Brownie de chocolate caliente con helado de vainilla',
-            'price' => 7.99,
+            'price' => 291.64,
             'image' => 'https://images.unsplash.com/photo-1607920591413-4ec007e70023?w=800&q=80',
             'is_active' => true,
         ]);
@@ -532,7 +532,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Crème Brûlée',
             'slug' => 'creme-brulee',
             'description' => 'Crema de vainilla con caramelo crujiente',
-            'price' => 10.50,
+            'price' => 383.25,
             'image' => 'https://images.unsplash.com/photo-1470124182917-cc6e71b22ecc?w=800&q=80',
             'is_active' => true,
         ]);
@@ -542,7 +542,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Helado Artesanal',
             'slug' => 'helado-artesanal',
             'description' => 'Tres bolas de helado artesanal a elegir',
-            'price' => 6.50,
+            'price' => 237.25,
             'image' => 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=800&q=80',
             'is_active' => true,
         ]);
@@ -552,14 +552,14 @@ class DatabaseSeeder extends Seeder
             'name' => 'Flan Casero',
             'slug' => 'flan-casero',
             'description' => 'Flan tradicional con caramelo líquido',
-            'price' => 5.99,
+            'price' => 218.64,
             'image' => 'https://images.unsplash.com/photo-1624353365286-3f8d62daad51?w=800&q=80',
             'is_active' => true,
         ]);
 
         // ==================== ÓRDENES ====================
         // TODO: Sample orders can be added after verifying product IDs
-        /* 
+        /*
         // Orden 1: Completada
         $order1 = Order::create([
             'user_id' => $customer1->id,
@@ -573,10 +573,10 @@ class DatabaseSeeder extends Seeder
             'created_at' => now()->subDays(2),
         ]);
 
-        OrderItem::create(['order_id' => $order1->id, 'product_id' => 6, 'quantity' => 1, 'unit_price' => 32.99, 'subtotal' => 32.99, 'notes' => 'Término medio']);
-        OrderItem::create(['order_id' => $order1->id, 'product_id' => 1, 'quantity' => 1, 'unit_price' => 8.99, 'subtotal' => 8.99]);
-        OrderItem::create(['order_id' => $order1->id, 'product_id' => 18, 'quantity' => 2, 'unit_price' => 4.50, 'subtotal' => 9.00]);
-        OrderItem::create(['order_id' => $order1->id, 'product_id' => 24, 'quantity' => 2, 'unit_price' => 8.99, 'subtotal' => 17.98]);
+        OrderItem::create(['order_id' => $order1->id, 'product_id' => 6, 'quantity' => 1, 'unit_price' => 1204.14, 'subtotal' => 1204.14, 'notes' => 'Término medio']);
+        OrderItem::create(['order_id' => $order1->id, 'product_id' => 1, 'quantity' => 1, 'unit_price' => 328.14, 'subtotal' => 328.14]);
+        OrderItem::create(['order_id' => $order1->id, 'product_id' => 18, 'quantity' => 2, 'unit_price' => 164.25, 'subtotal' => 328.50]);
+        OrderItem::create(['order_id' => $order1->id, 'product_id' => 24, 'quantity' => 2, 'unit_price' => 328.14, 'subtotal' => 656.28]);
         */
     }
 }
